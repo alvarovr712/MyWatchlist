@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 export function TabNavigator() {
   return (
     <Tab.Navigator
-      tabBar={(props) => <CustomTab {...props} />}   // 👈 AQUÍ USAMOS TU MENÚ PERSONALIZADO
+      tabBar={(props) => <CustomTab {...props} />}  
       screenOptions={{
         headerShown: false,
       }}
