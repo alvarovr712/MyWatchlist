@@ -1,18 +1,23 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, useWindowDimensions } from 'react-native';
 import { useWatchlistStore } from '../store/WatchlistStore';
+import { useAuthStore } from '../store/AuthStore';
 
 function WatchlistScreen() {
   const instruments = useWatchlistStore((state) => state.instruments);
+  const userWatchlist = useAuthStore((state) => state.watchlist);
   const { width } = useWindowDimensions();
   const isSmall = width < 360;
+
+  //Filter in instruments by user's watchlist
+  const filtered = instruments.filter((i) => userWatchlist.includes(i.id));
 
   return (
     <View style={styles.container}>
       
 
       <FlatList
-        data={instruments}
+        data={filtered}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 20 }}
         renderItem={({ item }) => (

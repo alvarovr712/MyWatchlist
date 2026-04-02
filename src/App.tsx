@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { StatusBar, StyleSheet, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { AppNavigator } from './navigation/AppNavigator'; 
+import RootNavigator from './navigation/RootNavigator';
 import { useWatchlistStore } from './store/WatchlistStore';
 import { mockInstruments } from './data/mockInstruments';
 
@@ -21,7 +21,7 @@ function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppNavigator />
+      <RootNavigator />
     </SafeAreaProvider>
   );
 }

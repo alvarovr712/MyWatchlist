@@ -3,9 +3,6 @@ import type { Instrument } from '../types/Instrument';
 
 interface WatchlistState {
   instruments: Instrument[];
-  favorites: string[];
-  addFavorite: (id: string) => void;
-  removeFavorite: (id: string) => void;
   setInstruments: (data: Instrument[]) => void;
   updatePrices: () => void;
 }
@@ -14,16 +11,7 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
   instruments: [],
   favorites: [],
 
-  addFavorite: (id) =>
-    set((state) => ({
-      favorites: [...state.favorites, id],
-    })),
-
-  removeFavorite: (id) =>
-    set((state) => ({
-      favorites: state.favorites.filter((fav) => fav !== id),
-    })),
-
+  
   setInstruments: (data) => set({ instruments: data }),
 
   updatePrices: () => {
