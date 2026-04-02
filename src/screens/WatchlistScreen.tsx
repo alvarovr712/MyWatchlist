@@ -19,7 +19,7 @@ function WatchlistScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 20 }}
         renderItem={({ item }) => (
-          <InstrumentCard instrument={item} isSmall={isSmall} width={width} />
+          <InstrumentCard instrument={item} isSmall={isSmall} width={width} showAddButton={false} />
         )}
       />
     </View>

@@ -1,17 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import type { Instrument } from '../types/Instrument';
 
 interface Props {
   instrument: Instrument;
   isSmall?: boolean;
   width: number;
+  showAddButton?: boolean;
+  onAdd?: () => void;
 }
 
-const InstrumentCard = ({ instrument, isSmall = false, width }: Props) => {
+const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = false, onAdd }: Props) => {
   return (
     <View style={[styles.card, isSmall && { padding: 14 }]}>
-      <View style={{ maxWidth: width * 0.55 }}>
+      
+      {/* LEFT SIDE */}
+      <View style={{ flex: 1, marginRight: 8 }}>
         <Text style={[styles.name, isSmall && { fontSize: 15 }]} numberOfLines={1}>
           {instrument.name}
         </Text>
@@ -20,21 +25,34 @@ const InstrumentCard = ({ instrument, isSmall = false, width }: Props) => {
         </Text>
       </View>
 
-      <View style={styles.right}>
-        <Text style={[styles.price, isSmall && { fontSize: 15 }]} numberOfLines={1}>
-          ${instrument.price.toFixed(2)}
-        </Text>
-        <Text
-          style={[
-            styles.change,
-            { color: instrument.change >= 0 ? 'green' : 'red' },
-            isSmall && { fontSize: 13 },
-          ]}
-          numberOfLines={1}
-        >
-          {instrument.change >= 0 ? '+' : ''}
-          {instrument.change.toFixed(2)}%
-        </Text>
+      {/* RIGHT GROUP */}
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={styles.right}>
+          <Text style={[styles.price, isSmall && { fontSize: 15 }]} numberOfLines={1}>
+            ${instrument.price.toFixed(2)}
+          </Text>
+          <Text
+            style={[
+              styles.change,
+              { color: instrument.change >= 0 ? 'green' : 'red' },
+              isSmall && { fontSize: 13 },
+            ]}
+            numberOfLines={1}
+          >
+            {instrument.change >= 0 ? '+' : ''}
+            {instrument.change.toFixed(2)}%
+          </Text>
+        </View>
+
+        {showAddButton && (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={onAdd}
+            style={styles.addButton}
+          >
+            <Icon name="add" size={24} color="#00C805" />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -44,6 +62,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 18,
     backgroundColor: '#fff',
     borderRadius: 14,
@@ -73,6 +92,15 @@ const styles = StyleSheet.create({
   change: {
     fontSize: 14,
     marginTop: 2,
+  },
+  addButton: {
+    backgroundColor: 'rgba(0, 200, 5, 0.12)',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 18,
   },
 });
 

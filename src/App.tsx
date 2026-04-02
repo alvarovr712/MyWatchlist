@@ -6,16 +6,21 @@ import { useWatchlistStore } from './store/WatchlistStore';
 import { mockInstruments } from './data/mockInstruments';
 
 
+
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const setInstruments = useWatchlistStore((state) => state.setInstruments);
 
   useEffect(() => {
+    
     setInstruments(mockInstruments);
 
     const interval = setInterval(() => {
       useWatchlistStore.getState().updatePrices();
     }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
