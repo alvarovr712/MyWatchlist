@@ -1,26 +1,31 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet, useWindowDimensions } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import Svg, { Defs, LinearGradient, Stop, Circle } from "react-native-svg";
+import { Canvas, Circle, LinearGradient, vec } from "@shopify/react-native-skia";
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-export function CustomTab({ state, descriptors, navigation }) {
+type TabRouteName = "WatchlistTab" | "Favorites" | "Search";
+
+const icons: Record<TabRouteName, string> = {
+  WatchlistTab: "bar-chart-sharp",
+  Favorites: "star-sharp",
+  Search: "search-sharp",
+};
+
+export function CustomTab({ state, descriptors, navigation }: BottomTabBarProps) {
   const { width } = useWindowDimensions();
   const containerWidth = width > 500 ? 400 : width * 0.92;
 
   return (
     <View style={[styles.wrapper, { width }]}>
       <View style={[styles.container, { width: containerWidth }]}>
-        
+
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
           const { options } = descriptors[route.key];
           const label = options.title ?? route.name;
 
-          const icons = {
-            WatchlistTab: "bar-chart-sharp",
-            Favorites: "star-sharp",
-            Search: "search-sharp",
-          };
+          const routeName = route.name as TabRouteName;
 
           const onPress = () => {
             navigation.navigate(route.name);
@@ -32,33 +37,35 @@ export function CustomTab({ state, descriptors, navigation }) {
               onPress={onPress}
               style={styles.tab}
             >
-              
               <View style={styles.iconCircle}>
+
                 {isFocused && (
                   <View style={StyleSheet.absoluteFill}>
-                    <Svg height="100%" width="100%" viewBox="0 0 100 100">
-                      <Defs>
-                        <LinearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <Stop offset="0%" stopColor="#00E606" />
-                          <Stop offset="100%" stopColor="#00A000" />
-                        </LinearGradient>
-                      </Defs>
-                      <Circle cx="50" cy="50" r="50" fill="url(#grad)" />
-                    </Svg>
+                    <Canvas style={{ flex: 1 }}>
+                      <Circle cx={24} cy={24} r={24}>
+                        <LinearGradient
+                          start={vec(0, 0)}
+                          end={vec(0, 48)}
+                          colors={["#00E606", "#00A000"]}
+                        />
+                      </Circle>
+                    </Canvas>
                   </View>
                 )}
 
                 <Icon
-                  name={icons[route.name]}
+                  name={icons[routeName]}
                   size={22}
                   color={isFocused ? "#fff" : "#666"}
                 />
               </View>
 
-              <Text style={[
-                styles.labelText,
-                { color: isFocused ? "#00C805" : "#757575" }
-              ]}>
+              <Text
+                style={[
+                  styles.labelText,
+                  { color: isFocused ? "#00C805" : "#757575" }
+                ]}
+              >
                 {label}
               </Text>
             </TouchableOpacity>
@@ -102,8 +109,9 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden", 
+    overflow: "hidden",
     marginBottom: 2,
+    backgroundColor: "transparent",
   },
   labelText: {
     fontSize: 12,

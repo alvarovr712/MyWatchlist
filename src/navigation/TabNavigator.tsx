@@ -1,11 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { WatchlistNavigator } from "./WatchlistNavigator";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import SearchScreen from "../screens/SearchScreen";
 
 import { CustomTab } from "../components/CustomTab";
+import WatchlistScreen from "../screens/WatchlistScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +18,7 @@ export function TabNavigator() {
     >
       <Tab.Screen
         name="WatchlistTab"
-        component={WatchlistNavigator}
+        component={WatchlistScreen}
         options={{ title: "Watchlist" }}
       />
 

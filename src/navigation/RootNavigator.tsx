@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useAuthStore } from "../store/AuthStore";
-import { AppNavigator } from "./AppNavigator";
 import LoginScreen from "../screens/LoginScreen";
+import { MainStackNavigator } from "./MainStackNavigator";
 
 const RootNavigator = () => {
 
@@ -24,7 +24,7 @@ const RootNavigator = () => {
 
     return (
         <NavigationContainer>
-            {isLoggedIn ? <AppNavigator /> : <LoginScreen />}
+            {isLoggedIn ? <MainStackNavigator /> : <LoginScreen />}
         </NavigationContainer>
     )
 };

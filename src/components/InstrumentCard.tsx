@@ -2,6 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import type { Instrument } from '../types/Instrument';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RootStackParamList } from '../navigation/MainStackNavigator';
+import { ChangeColor } from '../utils/ChangeColor';
 
 interface Props {
   instrument: Instrument;
@@ -11,9 +15,18 @@ interface Props {
   onAdd?: () => void;
 }
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Detail">;
+
 const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = false, onAdd }: Props) => {
+
+    const navigation = useNavigation<NavigationProp>();
+
   return (
-    <View style={[styles.card, isSmall && { padding: 14 }]}>
+    <TouchableOpacity
+    style={[styles.card, isSmall && { padding: 14 }]}
+      activeOpacity ={0.8}
+      onPress={() => navigation.navigate('Detail', { id: instrument.id })}
+      >
       
       {/* LEFT SIDE */}
       <View style={{ flex: 1, marginRight: 8 }}>
@@ -34,7 +47,7 @@ const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = fa
           <Text
             style={[
               styles.change,
-              { color: instrument.change >= 0 ? 'green' : 'red' },
+              { color: ChangeColor(instrument.change)},
               isSmall && { fontSize: 13 },
             ]}
             numberOfLines={1}
@@ -54,7 +67,7 @@ const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = fa
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

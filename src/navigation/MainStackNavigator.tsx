@@ -1,28 +1,29 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import WatchlistScreen from "../screens/WatchlistScreen";
+import { TabNavigator } from "./TabNavigator";
 import DetailScreen from "../screens/DetailScreen";
 
 export type RootStackParamList = {
-    Watchlist: undefined;
+    Tabs: undefined;
     Detail: { id: string };
-};
+}
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export function WatchlistNavigator() {
-    return (
+export const MainStackNavigator = () => {
+    return(
         <Stack.Navigator>
             <Stack.Screen
-                name="Watchlist"
-                component={WatchlistScreen}
-                options={{ title: "My Watchlist" }}
+                name = "Tabs"
+                component = {TabNavigator}
+                options={{ headerShown: false }}
+            
             />
             <Stack.Screen
-                name="Detail"
-                component={DetailScreen}
-                options={{ title: "Instrument Detail" }}
+                name = "Detail"
+                component = {DetailScreen}
+                options = {{ title : "Instrument Detail"}}
             />
         </Stack.Navigator>
-    );
+    )
 }
