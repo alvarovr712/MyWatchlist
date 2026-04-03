@@ -5,4 +5,7 @@ export interface User {
     password: string;
     favorites: string[];
     watchlist: string[];
+    phone:string;
+    country:string;
+    createdAt: Date;
 }

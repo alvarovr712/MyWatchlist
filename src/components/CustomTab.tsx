@@ -4,12 +4,13 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Canvas, Circle, LinearGradient, vec } from "@shopify/react-native-skia";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-type TabRouteName = "WatchlistTab" | "Favorites" | "Search";
+type TabRouteName = "WatchlistTab" | "Favorites" | "Search" | "Profile";
 
 const icons: Record<TabRouteName, string> = {
   WatchlistTab: "bar-chart-sharp",
   Favorites: "star-sharp",
   Search: "search-sharp",
+  Profile: "person-sharp",
 };
 
 export function CustomTab({ state, descriptors, navigation }: BottomTabBarProps) {

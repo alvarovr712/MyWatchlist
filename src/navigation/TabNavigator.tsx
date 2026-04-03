@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import SearchScreen from "../screens/SearchScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 import { CustomTab } from "../components/CustomTab";
 import WatchlistScreen from "../screens/WatchlistScreen";
@@ -40,6 +41,15 @@ export function TabNavigator() {
         component={SearchScreen}
         options={{ title: "Search" }}
       />
+
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ title: "Profile" }}
+      
+      />
     </Tab.Navigator>
+
+    
   );
 }

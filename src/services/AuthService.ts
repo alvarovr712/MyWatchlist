@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Users } from "../data/User";
+import { Users } from "../data/MockUser";
 import type { User } from "../types/User";
 
 
