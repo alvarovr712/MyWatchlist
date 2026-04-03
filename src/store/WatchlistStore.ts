@@ -18,14 +18,15 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
     const { instruments } = get();
 
     const updated = instruments.map((item) => {
-      const newPrice = item.price + (Math.random() * 2 - 1);
+      const volatility = item.price * 0.05;
+      const newPrice = item.price + (Math.random() * volatility * 2 - volatility);
       const newChange = ((newPrice - item.price) / item.price) * 100;
 
       return {
         ...item,
         price: Number(newPrice.toFixed(2)),
         change: Number(newChange.toFixed(2)),
-        history: [...item.history.slice(-20), newPrice],
+        history: [...item.history.slice(-80), newPrice],
       };
     });
 

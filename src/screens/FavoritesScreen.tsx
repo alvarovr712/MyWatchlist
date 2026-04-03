@@ -10,6 +10,10 @@ export default function FavoritesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: { 
+    flex: 1, 
+    padding: 20,
+    backgroundColor: "#f2f2f7",
+  },
   text: { fontSize: 20 }
 });

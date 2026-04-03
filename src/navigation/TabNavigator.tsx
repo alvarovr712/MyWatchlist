@@ -13,7 +13,14 @@ export function TabNavigator() {
     <Tab.Navigator
       tabBar={(props) => <CustomTab {...props} />}  
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#fff",
+        },
+        headerTitleStyle: {
+          fontWeight: "700",
+        },
       }}
     >
       <Tab.Screen
