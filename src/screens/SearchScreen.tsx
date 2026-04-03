@@ -33,7 +33,7 @@ const SearchScreen = () => {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 130 }}
         renderItem={({ item }) => {
           const isAdded = userWatchlist.includes(item.id);
 

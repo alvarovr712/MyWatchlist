@@ -59,7 +59,7 @@ function WatchlistScreen() {
       <FlatList
         data={sorted}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 130 }}
         renderItem={({ item }) => (
           <InstrumentCard instrument={item} isSmall={isSmall} width={width} showAddButton={false} />
         )}

@@ -13,11 +13,13 @@ interface Props {
   width: number;
   showAddButton?: boolean;
   onAdd?: () => void;
+  favoriteButton?: boolean;
+  onAddFavorite?: () => void;
 }
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Detail">;
 
-const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = false, onAdd }: Props) => {
+const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = false, onAdd,favoriteButton = false,onAddFavorite }: Props) => {
 
     const navigation = useNavigation<NavigationProp>();
 
@@ -66,6 +68,17 @@ const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = fa
             <Icon name="add" size={24} color="#00C805" />
           </TouchableOpacity>
         )}
+        {favoriteButton && (
+          <TouchableOpacity 
+            activeOpacity={0.7}
+            onPress={onAddFavorite}
+            style={styles.favoriteButton}
+          >
+            <Icon name="trash-outline" size={22} color="#FF3B30" />
+
+          </TouchableOpacity>
+        )}
+
       </View>
     </TouchableOpacity>
   );
@@ -115,6 +128,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 18,
   },
+
+  favoriteButton: {
+  backgroundColor: 'rgba(255, 59, 48, 0.12)',
+  width: 36,
+  height: 36,
+  borderRadius: 18,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginLeft: 18,
+},
+
 });
 
 export default InstrumentCard;
