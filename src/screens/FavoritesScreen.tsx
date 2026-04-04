@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, useWindowDimensions, FlatList } from "react-native";
-import{useAuthStore} from "../store/AuthStore";
+import { useAuthStore } from "../store/AuthStore";
 import { useWatchlistStore } from "../store/WatchlistStore";
 import InstrumentCard from "../components/InstrumentCard";
+import { useTheme } from "../utils/useTheme";
 
 const FavoritesScreen = () => {
 
@@ -10,34 +11,36 @@ const FavoritesScreen = () => {
   const instruments = useWatchlistStore((state) => state.instruments);
   const removeFavorite = useAuthStore((state) => state.removeFavorite);
 
-  const {width} = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const isSmall = width < 360;
 
   const filtered = instruments.filter((f) => favorites.includes(f.id));
 
-  return(
-    <View style = {styles.container}>
-      <FlatList 
-      
-      data={filtered}
-      keyExtractor={(item) => item.id}
-      contentContainerStyle={{ paddingBottom: 130 }}
-      renderItem = {({item}) =>(
-        <InstrumentCard
-        instrument = {item}
-        isSmall = {isSmall}
-        width = {width}
-        showAddButton = {false}
-        favoriteButton = {true}
-        onAddFavorite={() => removeFavorite(item.id)}
-        />
-      )}
+  const colors = useTheme();
 
-      ListEmptyComponent={
-        <Text style = {styles.empyText}>
-          You have no favorites yet.
-        </Text>
-      }
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <FlatList
+
+        data={filtered}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingBottom: 130 }}
+        renderItem={({ item }) => (
+          <InstrumentCard
+            instrument={item}
+            isSmall={isSmall}
+            width={width}
+            showAddButton={false}
+            favoriteButton={true}
+            onAddFavorite={() => removeFavorite(item.id)}
+          />
+        )}
+
+        ListEmptyComponent={
+          <Text style={[styles.empyText, { color: colors.textSecondary }]}>
+            You have no favorites yet.
+          </Text>
+        }
       />
 
     </View>
@@ -51,14 +54,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f2f2f7",
   },
 
   empyText: {
     textAlign: "center",
     marginTop: 40,
     fontSize: 16,
-    color: "#666"
   }
-  
+
 })

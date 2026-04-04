@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useAuthStore } from "../store/AuthStore";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useTheme } from "../utils/useTheme";
 
 const LoginScreen = () => {
   const login = useAuthStore((state) => state.login);
@@ -9,6 +10,8 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const colors = useTheme();
 
   const loginUser = async () => {
     const ok = await login(email, password);
@@ -20,37 +23,39 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
 
-     
-      <Text style={styles.title}>Welcome back</Text>
-      <Text style={styles.subtitle}>Access your account</Text>
 
-      
-      <View style={styles.card}>
 
-        
-        <Text style={styles.label}>Email</Text>
-        <View style={styles.inputContainer}>
-          <Icon name="mail-outline" size={20} color="#777" style={styles.inputIcon} />
+      <Text style={[styles.title, { color: colors.text }]}>Welcome back</Text>
+      <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Access your account</Text>
+
+
+      <View style={[styles.card, { backgroundColor: colors.card }]}>
+
+
+        <Text style={[styles.label, { color: colors.text }]}>Email</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.input }]}>
+          <Icon name="mail-outline" size={20} color={colors.textSecondary} />
+
           <TextInput
-            style={styles.input}
+            style={[styles.input, { color: colors.text }]}
             placeholder="Enter your email"
-            placeholderTextColor="#aaa"
+            placeholderTextColor={colors.textSecondary}
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
           />
         </View>
 
-        
-        <Text style={styles.label}>Password</Text>
-        <View style={styles.inputContainer}>
-          <Icon name="lock-closed-outline" size={20} color="#777" style={styles.inputIcon} />
+
+        <Text style={[styles.label, { color: colors.text }]}>Password</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.input }]}>
+          <Icon name="lock-closed-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
           <TextInput
-            style={styles.input}
+            style={[styles.input, { color: colors.text }]}
             placeholder="Enter your password"
-            placeholderTextColor="#aaa"
+            placeholderTextColor={colors.textSecondary}
             secureTextEntry
             value={password}
             onChangeText={setPassword}
@@ -60,9 +65,9 @@ const LoginScreen = () => {
         {error !== "" && <Text style={styles.error}>{error}</Text>}
       </View>
 
-      
-      <TouchableOpacity style={styles.button} onPress={loginUser}>
-        <Text style={styles.buttonText}>Log In</Text>
+
+      <TouchableOpacity style={[styles.button, { backgroundColor: colors.button }]}>
+        <Text style={[styles.buttonText, { color: colors.buttonText }]} onPress={loginUser}>Log In</Text>
       </TouchableOpacity>
 
     </View>
@@ -76,25 +81,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 25,
-    backgroundColor: "#f2f2f7",
   },
 
   title: {
     fontSize: 32,
     fontWeight: "700",
-    color: "#111",
     textAlign: "center",
   },
 
   subtitle: {
     fontSize: 15,
-    color: "#666",
     textAlign: "center",
     marginBottom: 30,
   },
 
   card: {
-    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 16,
     marginBottom: 25,
@@ -116,7 +117,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#f7f7f7",
     borderRadius: 10,
     paddingHorizontal: 12,
     marginBottom: 10,
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#00C805",
     paddingVertical: 15,
     borderRadius: 30,
     alignItems: "center",

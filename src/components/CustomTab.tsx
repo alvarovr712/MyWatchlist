@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet, useWindowDimensions } from "r
 import Icon from "react-native-vector-icons/Ionicons";
 import { Canvas, Circle, LinearGradient, vec } from "@shopify/react-native-skia";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { useTheme } from "../utils/useTheme";
 
 type TabRouteName = "WatchlistTab" | "Favorites" | "Search" | "Profile";
 
@@ -15,11 +16,12 @@ const icons: Record<TabRouteName, string> = {
 
 export function CustomTab({ state, descriptors, navigation }: BottomTabBarProps) {
   const { width } = useWindowDimensions();
+  const colors = useTheme();
   const containerWidth = width > 500 ? 400 : width * 0.92;
 
   return (
     <View style={[styles.wrapper, { width }]}>
-      <View style={[styles.container, { width: containerWidth }]}>
+      <View style={[styles.container, { width: containerWidth, backgroundColor: colors.card }]}>
 
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
@@ -57,14 +59,14 @@ export function CustomTab({ state, descriptors, navigation }: BottomTabBarProps)
                 <Icon
                   name={icons[routeName]}
                   size={22}
-                  color={isFocused ? "#fff" : "#666"}
+                  color={isFocused ? "#fff" : colors.textSecondary}
                 />
               </View>
 
               <Text
                 style={[
                   styles.labelText,
-                  { color: isFocused ? "#00C805" : "#757575" }
+                  { color: isFocused ? colors.button : colors.textSecondary }
                 ]}
               >
                 {label}

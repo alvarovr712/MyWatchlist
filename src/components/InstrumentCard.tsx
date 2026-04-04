@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from '../navigation/MainStackNavigator';
 import { ChangeColor } from '../utils/ChangeColor';
+import { useTheme } from '../utils/useTheme';
 
 interface Props {
   instrument: Instrument;
@@ -19,23 +20,27 @@ interface Props {
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Detail">;
 
-const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = false, onAdd,favoriteButton = false,onAddFavorite }: Props) => {
 
-    const navigation = useNavigation<NavigationProp>();
+
+const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = false, onAdd, favoriteButton = false, onAddFavorite }: Props) => {
+
+  const colors = useTheme();
+
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <TouchableOpacity
-    style={[styles.card, isSmall && { padding: 14 }]}
-      activeOpacity ={0.8}
+      style={[styles.card, { backgroundColor: colors.card}, isSmall && { padding: 14 }]}
+      activeOpacity={0.8}
       onPress={() => navigation.navigate('Detail', { id: instrument.id })}
-      >
-      
+    >
+
       {/* LEFT SIDE */}
       <View style={{ flex: 1, marginRight: 8 }}>
-        <Text style={[styles.name, isSmall && { fontSize: 15 }]} numberOfLines={1}>
+        <Text style={[styles.name, { color: colors.text }, isSmall && { fontSize: 15 }]} numberOfLines={1}>
           {instrument.name}
         </Text>
-        <Text style={[styles.symbol, isSmall && { fontSize: 13 }]} numberOfLines={1}>
+        <Text style={[styles.symbol, { color: colors.textSecondary }, isSmall && { fontSize: 13 }]} numberOfLines={1}>
           {instrument.symbol}
         </Text>
       </View>
@@ -43,13 +48,13 @@ const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = fa
       {/* RIGHT GROUP */}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={styles.right}>
-          <Text style={[styles.price, isSmall && { fontSize: 15 }]} numberOfLines={1}>
+          <Text style={[styles.price,{ color: colors.text }, isSmall && { fontSize: 15 }]} numberOfLines={1}>
             ${instrument.price.toFixed(2)}
           </Text>
           <Text
             style={[
               styles.change,
-              { color: ChangeColor(instrument.change)},
+              { color: ChangeColor(instrument.change) },
               isSmall && { fontSize: 13 },
             ]}
             numberOfLines={1}
@@ -63,16 +68,16 @@ const InstrumentCard = ({ instrument, isSmall = false, width, showAddButton = fa
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={onAdd}
-            style={styles.addButton}
+            style={[styles.addButton, { backgroundColor: 'rgba(0, 200, 5, 0.12)' }]}
           >
-            <Icon name="add" size={24} color="#00C805" />
+            <Icon name="add" size={24} color={colors.button} />
           </TouchableOpacity>
         )}
         {favoriteButton && (
-          <TouchableOpacity 
+          <TouchableOpacity
             activeOpacity={0.7}
             onPress={onAddFavorite}
-            style={styles.favoriteButton}
+            style={[styles.favoriteButton, { backgroundColor: 'rgba(255, 59, 48, 0.12)' }]}
           >
             <Icon name="trash-outline" size={22} color="#FF3B30" />
 
@@ -90,7 +95,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 18,
-    backgroundColor: '#fff',
     borderRadius: 14,
     marginBottom: 14,
     shadowColor: '#000',
@@ -105,7 +109,6 @@ const styles = StyleSheet.create({
   },
   symbol: {
     fontSize: 14,
-    color: '#666',
     marginTop: 2,
   },
   right: {
@@ -120,7 +123,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   addButton: {
-    backgroundColor: 'rgba(0, 200, 5, 0.12)',
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -130,14 +132,13 @@ const styles = StyleSheet.create({
   },
 
   favoriteButton: {
-  backgroundColor: 'rgba(255, 59, 48, 0.12)',
-  width: 36,
-  height: 36,
-  borderRadius: 18,
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginLeft: 18,
-},
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 18,
+  },
 
 });
 

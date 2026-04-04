@@ -9,12 +9,14 @@ import { LineChart } from "react-native-gifted-charts";
 import { useWindowDimensions } from "react-native";
 import { useAuthStore } from "../store/AuthStore";
 import { useState } from "react";
+import { useTheme } from "../utils/useTheme";
 
 type DetailRouteProp = RouteProp<RootStackParamList, "Detail">;
 
 const DetailScreen = () => {
   const route = useRoute<DetailRouteProp>();
   const { id } = route.params;
+  const colors = useTheme();
 
   {/*SEARCH INSTRUMENT BY ID*/ }
   const instruments = useWatchlistStore((state) => state.instruments);
@@ -92,7 +94,7 @@ const DetailScreen = () => {
 
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* HEADER */}
       <View style={styles.header}>
         <View style={styles.titleRow}>
@@ -103,14 +105,14 @@ const DetailScreen = () => {
           >
             <Icon name={isFavorite ? "star" : "star-outline"} size={26} color="#FFB000" />
           </TouchableOpacity>
-          <Text style={styles.name}>{instrument.name}</Text>
+           <Text style={[styles.name, { color: colors.text }]}>{instrument.name}</Text>
         </View>
-        <Text style={styles.symbol}>{instrument.symbol}</Text>
+         <Text style={[styles.symbol, { color: colors.textSecondary }]}>{instrument.symbol}</Text>
       </View>
 
       {/* PRICE */}
       <View style={styles.priceBox}>
-        <Text style={styles.price}>${instrument.price.toFixed(2)}</Text>
+         <Text style={[styles.price, { color: colors.text }]}>${instrument.price.toFixed(2)}</Text>
         <Text style={[styles.change, { color: chartColor }]}>
           {instrument.change >= 0 ? "+" : ""}
           {instrument.change.toFixed(2)}%
@@ -122,15 +124,17 @@ const DetailScreen = () => {
           <TouchableOpacity
             key={r}
             onPress={() => setRange(r)}
-            style={[
+              style={[
               styles.rangeButton,
-              range === r && styles.rangeButtonActive
+              { backgroundColor: colors.card },
+              range === r && { backgroundColor: colors.button }
             ]}
           >
             <Text
-              style={[
+                style={[
                 styles.rangeText,
-                range === r && styles.rangeTextActive
+                { color: colors.text },
+                range === r && { color: colors.buttonText }
               ]}
             >
               {r}
@@ -139,7 +143,7 @@ const DetailScreen = () => {
         ))}
       </View>
 
-      <View style={styles.graphContainer}>
+       <View style={[styles.graphContainer, { backgroundColor: colors.card }]}>
         {chartData.length > 1 ? (
 
         <LineChart
@@ -166,19 +170,19 @@ const DetailScreen = () => {
           noOfSections={10}
           yAxisColor="#f0f0f0"
           xAxisColor="#f0f0f0"
-          yAxisTextStyle={{ color: "#999", fontSize: 10 }}
+          yAxisTextStyle={{ color: colors.textSecondary, fontSize: 10 }}
           isAnimated
           animationDuration={1200}
         />
         ) : (
-          <Text style={{textAlign: "center", color:"#999",padding:20}}>Not enough data for this range</Text>
+          <Text style={{ textAlign: "center", color: colors.textSecondary, padding: 20 }}></Text>
         )}
       </View>
 
       {/* ACTION BUTTONS */}
       <View style={styles.actions}>
-        <TouchableOpacity style={[styles.actionButton, isInWatchlist &&{backgroundColor: "red"}]} onPress={toggleWatchlist}>
-          <Text style={styles.actionText}>{isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}</Text>
+        <TouchableOpacity style={[styles.actionButton,{ backgroundColor: isInWatchlist ? "#FF3B30" : colors.button }]} onPress={toggleWatchlist}>
+           <Text style={[styles.actionText, { color: colors.buttonText }]}>{isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -191,7 +195,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f2f2f7",
   },
   header: {
     marginBottom: 10,
@@ -212,7 +215,6 @@ const styles = StyleSheet.create({
   },
   symbol: {
     fontSize: 18,
-    color: "#666",
     marginTop: 4,
     textAlign: "center",
   },
@@ -232,7 +234,6 @@ const styles = StyleSheet.create({
   },
   graphContainer: {
     marginTop: 20,
-    backgroundColor: "#fff",
     borderRadius: 12,
     padding: 16,
     overflow: "hidden",
@@ -246,7 +247,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   actionButton: {
-    backgroundColor: "#00C805",
     padding: 16,
     borderRadius: 12,
     marginBottom: 14,
@@ -254,7 +254,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   actionText: {
-    color: "#fff",
     fontSize: 16,
     fontWeight: "600",
     textAlign: "center",
@@ -269,17 +268,13 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 8,
-    backgroundColor: "#eee",
   },
   rangeButtonActive: {
-    backgroundColor: "#00C805",
   },
   rangeText: {
-    color: "#333",
     fontWeight: "600",
   },
   rangeTextActive: {
-    color: "#fff",
   },
 
 });

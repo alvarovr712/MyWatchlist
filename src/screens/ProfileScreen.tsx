@@ -1,14 +1,9 @@
 import React from "react";
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TouchableOpacity, 
-  ScrollView 
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthStore } from "../store/AuthStore";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useTheme } from "../utils/useTheme";
 
 const ProfileScreen = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -18,41 +13,43 @@ const ProfileScreen = () => {
     return (
       <View style={styles.center}>
         <Icon name="person-circle-outline" size={80} color="#ccc" />
-        <Text style={styles.emptyText}>No has iniciado sesión</Text>
+        <Text style={styles.emptyText}>Dates not found</Text>
       </View>
     );
   }
 
+  const colors = useTheme();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
 
         {/* HEADER */}
-        <View style={styles.header}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
+        <View style={[styles.header, { borderBottomColor: colors.border }]}>
+           <View style={[styles.avatar, { backgroundColor: colors.button }]}>
+             <Text style={[styles.avatarText, { color: colors.buttonText }]}>
               {currentUser.name[0]}
               {currentUser.surname[0]}
             </Text>
           </View>
 
-          <Text style={styles.userName}>
+          <Text style={[styles.userName, { color: colors.text }]}>
             {currentUser.name} {currentUser.surname}
           </Text>
-          <Text style={styles.userEmail}>{currentUser.email}</Text>
+           <Text style={[styles.userEmail, { color: colors.textSecondary }]}>{currentUser.email}</Text>
 
           <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
-            <Text style={styles.logoutBtnText}>Logout</Text>
+            <Text style={[styles.logoutBtnText, { color: "#fff" }]}>Logout</Text>
           </TouchableOpacity>
         </View>
 
         {/* INFO */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Datos personales</Text>
+           <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>Personal dates</Text>
 
-          <View style={styles.card}>
-            <InfoRow icon="call-outline" label="Teléfono" value={currentUser.phone} />
-            <InfoRow icon="globe-outline" label="País" value={currentUser.country} />
+          <View style={[styles.card, { backgroundColor: colors.card }]}>
+            <InfoRow icon="call-outline" label="Phone" value={currentUser.phone} />
+            <InfoRow icon="globe-outline" label="Country" value={currentUser.country} />
             <InfoRow 
               icon="calendar-outline" 
               label="Fecha de registro" 
@@ -76,15 +73,20 @@ type InfoRowProps = {
   isLast?: boolean;
 };
 
-const InfoRow = ({ icon, label, value, isLast = false }: InfoRowProps) => (
-  <View style={[styles.row, !isLast && styles.rowSeparator]}>
-    <Icon name={icon} size={22} color="#00C805" style={styles.rowIcon} />
-    <View style={styles.rowContent}>
-      <Text style={styles.rowLabel}>{label}</Text>
-      <Text style={styles.rowValue}>{value}</Text>
+const InfoRow = ({ icon, label, value, isLast = false }: InfoRowProps) => {
+  const colors = useTheme();
+
+  return (
+    <View style={[styles.row, !isLast && { borderBottomColor: colors.border, borderBottomWidth: 1 }]}>
+      <Icon name={icon} size={22} color={colors.button} style={styles.rowIcon} />
+      <View style={styles.rowContent}>
+        <Text style={[styles.rowLabel, { color: colors.textSecondary }]}>{label}</Text>
+        <Text style={[styles.rowValue, { color: colors.text }]}>{value}</Text>
+      </View>
     </View>
-  </View>
-);
+  );
+};
+
 
 export default ProfileScreen;
 
@@ -92,7 +94,6 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f2f7',
   },
 
   center: {
@@ -103,7 +104,6 @@ const styles = StyleSheet.create({
 
   emptyText: {
     fontSize: 16,
-    color: "#999",
     marginTop: 10,
   },
 
@@ -111,14 +111,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 30,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
   },
 
   avatar: {
     width: 85,
     height: 85,
     borderRadius: 42.5,
-    backgroundColor: "#00C805",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 15,
@@ -127,18 +125,15 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 32,
     fontWeight: "bold",
-    color: "#fff",
   },
 
   userName: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#333",
   },
 
   userEmail: {
     fontSize: 14,
-    color: "#777",
     marginBottom: 15,
   },
 
@@ -150,7 +145,6 @@ const styles = StyleSheet.create({
   },
 
   logoutBtnText: {
-    color: "#fff",
     fontSize: 14,
     fontWeight: "600",
   },
@@ -162,14 +156,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#999",
     marginBottom: 10,
     marginLeft: 5,
     textTransform: "uppercase",
   },
 
   card: {
-    backgroundColor: "#f9f9fb",
     borderRadius: 15,
     paddingHorizontal: 15,
   },
@@ -182,7 +174,6 @@ const styles = StyleSheet.create({
 
   rowSeparator: {
     borderBottomWidth: 1,
-    borderBottomColor: "#edeef2",
   },
 
   rowIcon: {
@@ -195,13 +186,11 @@ const styles = StyleSheet.create({
 
   rowLabel: {
     fontSize: 12,
-    color: "#999",
     marginBottom: 2,
   },
 
   rowValue: {
     fontSize: 15,
-    color: "#333",
     fontWeight: "600",
   },
 });

@@ -3,6 +3,7 @@ import { View, TextInput, FlatList, StyleSheet, useWindowDimensions } from 'reac
 import { useWatchlistStore } from "../store/WatchlistStore";
 import { useAuthStore } from "../store/AuthStore";
 import InstrumentCard from "../components/InstrumentCard";
+import { useTheme } from "../utils/useTheme";
 
 const SearchScreen = () => {
 
@@ -13,6 +14,7 @@ const SearchScreen = () => {
   const [query, setQuery] = useState("");
   const { width } = useWindowDimensions();
   const isSmall = width < 360;
+  const colors = useTheme();
 
   const filtered = instruments.filter((i) =>
     i.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -20,9 +22,10 @@ const SearchScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: colors.card, borderColor: colors.border, color: colors.text }]}
+        placeholderTextColor={colors.textSecondary}
         placeholder="Search instruments by name or symbol..."
         value={query}
         onChangeText={setQuery}
@@ -42,7 +45,7 @@ const SearchScreen = () => {
               instrument={item}
               isSmall={isSmall}
               width={width}
-              showAddButton={!isAdded}   
+              showAddButton={!isAdded}
               onAdd={() => addToWatchlist(item.id)}
             />
           );
@@ -58,15 +61,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#f2f2f7',
   },
   input: {
-    backgroundColor: '#fff',
     padding: 14,
     borderRadius: 12,
     marginBottom: 16,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#ddd',
   },
 });
