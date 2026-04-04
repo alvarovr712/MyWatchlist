@@ -105,14 +105,14 @@ const DetailScreen = () => {
           >
             <Icon name={isFavorite ? "star" : "star-outline"} size={26} color="#FFB000" />
           </TouchableOpacity>
-           <Text style={[styles.name, { color: colors.text }]}>{instrument.name}</Text>
+          <Text style={[styles.name, { color: colors.text }]}>{instrument.name}</Text>
         </View>
-         <Text style={[styles.symbol, { color: colors.textSecondary }]}>{instrument.symbol}</Text>
+        <Text style={[styles.symbol, { color: colors.textSecondary }]}>{instrument.symbol}</Text>
       </View>
 
       {/* PRICE */}
       <View style={styles.priceBox}>
-         <Text style={[styles.price, { color: colors.text }]}>${instrument.price.toFixed(2)}</Text>
+        <Text style={[styles.price, { color: colors.text }]}>${instrument.price.toFixed(2)}</Text>
         <Text style={[styles.change, { color: chartColor }]}>
           {instrument.change >= 0 ? "+" : ""}
           {instrument.change.toFixed(2)}%
@@ -124,14 +124,14 @@ const DetailScreen = () => {
           <TouchableOpacity
             key={r}
             onPress={() => setRange(r)}
-              style={[
+            style={[
               styles.rangeButton,
               { backgroundColor: colors.card },
               range === r && { backgroundColor: colors.button }
             ]}
           >
             <Text
-                style={[
+              style={[
                 styles.rangeText,
                 { color: colors.text },
                 range === r && { color: colors.buttonText }
@@ -143,37 +143,37 @@ const DetailScreen = () => {
         ))}
       </View>
 
-       <View style={[styles.graphContainer, { backgroundColor: colors.card }]}>
+      <View style={[styles.graphContainer, { backgroundColor: colors.card }]}>
         {chartData.length > 1 ? (
 
-        <LineChart
-          data={chartData}
-          areaChart
-          curved
-          height={180}
-          width={chartWidth - yAxisLabelWidth}
-          yAxisLabelWidth={yAxisLabelWidth}
-          initialSpacing={0}
-          endSpacing={0}
-          spacing={
-            chartData.length > 1
-              ? (chartWidth - yAxisLabelWidth) / (chartData.length - 1)
-              : 1
-          }
-          color={chartColor}
-          thickness={3}
-          startFillColor={chartColor}
-          endFillColor="white"
-          startOpacity={0.4}
-          endOpacity={0.1}
-          hideDataPoints
-          noOfSections={10}
-          yAxisColor="#f0f0f0"
-          xAxisColor="#f0f0f0"
-          yAxisTextStyle={{ color: colors.textSecondary, fontSize: 10 }}
-          isAnimated
-          animationDuration={1200}
-        />
+          <LineChart
+            data={chartData}
+            areaChart
+            curved
+            height={180}
+            width={chartWidth - yAxisLabelWidth}
+            yAxisLabelWidth={yAxisLabelWidth}
+            initialSpacing={0}
+            endSpacing={0}
+            spacing={
+              chartData.length > 1
+                ? (chartWidth - yAxisLabelWidth) / (chartData.length - 1)
+                : 1
+            }
+            color={chartColor}
+            thickness={3}
+            startFillColor={chartColor}
+            endFillColor="white"
+            startOpacity={0.4}
+            endOpacity={0.1}
+            hideDataPoints
+            noOfSections={10}
+            yAxisColor="#f0f0f0"
+            xAxisColor="#f0f0f0"
+            yAxisTextStyle={{ color: colors.textSecondary, fontSize: 10 }}
+            isAnimated
+            animationDuration={1200}
+          />
         ) : (
           <Text style={{ textAlign: "center", color: colors.textSecondary, padding: 20 }}></Text>
         )}
@@ -181,8 +181,11 @@ const DetailScreen = () => {
 
       {/* ACTION BUTTONS */}
       <View style={styles.actions}>
-        <TouchableOpacity style={[styles.actionButton,{ backgroundColor: isInWatchlist ? "#FF3B30" : colors.button }]} onPress={toggleWatchlist}>
-           <Text style={[styles.actionText, { color: colors.buttonText }]}>{isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}</Text>
+        <TouchableOpacity style={[styles.actionButton, { backgroundColor: isInWatchlist ? "#FF3B30" : colors.button }]} onPress={toggleWatchlist}
+        >
+          <Text style={[styles.actionText, { color: "#fff" }]}>
+            {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

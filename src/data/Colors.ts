@@ -17,5 +17,5 @@ export const darkTheme = {
   input: "#2c2c2e",
   border: "#3a3a3c",
   button: "#00C805",
-  buttonText: "#000",
+  buttonText: "#fff",
 };

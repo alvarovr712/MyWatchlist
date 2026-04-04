@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-nativ
 import { useAuthStore } from "../store/AuthStore";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../utils/useTheme";
+import Toast from 'react-native-toast-message';
 
 const LoginScreen = () => {
   const login = useAuthStore((state) => state.login);
@@ -17,7 +18,11 @@ const LoginScreen = () => {
     const ok = await login(email, password);
 
     if (!ok) {
-      setError("Invalid email or password");
+      Toast.show({
+        type: 'error',
+        text1: 'Login failed',
+        text2: 'Please check your credentials and try again.',
+      })
       return;
     }
   };
@@ -66,8 +71,8 @@ const LoginScreen = () => {
       </View>
 
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: colors.button }]}>
-        <Text style={[styles.buttonText, { color: colors.buttonText }]} onPress={loginUser}>Log In</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: colors.button }]} onPress={loginUser}>
+        <Text style={[styles.buttonText, { color: colors.buttonText }]}>Log In</Text>
       </TouchableOpacity>
 
     </View>

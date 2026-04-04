@@ -1,5 +1,5 @@
 import { useThemeStore } from "../store/ThemeStore";
-import { lightTheme, darkTheme } from "../theme/colors";
+import { lightTheme, darkTheme } from "../data/Colors";
 
 export const useTheme = () => {
     const isDarkMode = useThemeStore((state) => state.isDarkMode);

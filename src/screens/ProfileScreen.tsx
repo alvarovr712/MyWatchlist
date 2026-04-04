@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthStore } from "../store/AuthStore";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../utils/useTheme";
+import { InfoRow } from "../components/InfoRow";
 
 const ProfileScreen = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -50,11 +51,7 @@ const ProfileScreen = () => {
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <InfoRow icon="call-outline" label="Phone" value={currentUser.phone} />
             <InfoRow icon="globe-outline" label="Country" value={currentUser.country} />
-            <InfoRow 
-              icon="calendar-outline" 
-              label="Fecha de registro" 
-              value={new Date(currentUser.createdAt).toLocaleDateString()} 
-              isLast 
+            <InfoRow  icon="calendar-outline" label="Fecha de registro" value={new Date(currentUser.createdAt).toLocaleDateString()}  isLast 
             />
           </View>
         </View>
@@ -63,30 +60,6 @@ const ProfileScreen = () => {
     </SafeAreaView>
   );
 };
-
-
-
-type InfoRowProps = {
-  icon: string;
-  label: string;
-  value: string;
-  isLast?: boolean;
-};
-
-const InfoRow = ({ icon, label, value, isLast = false }: InfoRowProps) => {
-  const colors = useTheme();
-
-  return (
-    <View style={[styles.row, !isLast && { borderBottomColor: colors.border, borderBottomWidth: 1 }]}>
-      <Icon name={icon} size={22} color={colors.button} style={styles.rowIcon} />
-      <View style={styles.rowContent}>
-        <Text style={[styles.rowLabel, { color: colors.textSecondary }]}>{label}</Text>
-        <Text style={[styles.rowValue, { color: colors.text }]}>{value}</Text>
-      </View>
-    </View>
-  );
-};
-
 
 export default ProfileScreen;
 
@@ -166,31 +139,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
 
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 15,
-  },
-
-  rowSeparator: {
-    borderBottomWidth: 1,
-  },
-
-  rowIcon: {
-    marginRight: 15,
-  },
-
-  rowContent: {
-    flex: 1,
-  },
-
-  rowLabel: {
-    fontSize: 12,
-    marginBottom: 2,
-  },
-
-  rowValue: {
-    fontSize: 15,
-    fontWeight: "600",
-  },
+ 
 });
