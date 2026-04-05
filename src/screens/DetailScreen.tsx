@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useRoute } from "@react-navigation/native";
 import type { RouteProp } from "@react-navigation/native";
@@ -8,7 +8,7 @@ import { useWatchlistStore } from "../store/WatchlistStore";
 import { LineChart } from "react-native-gifted-charts";
 import { useWindowDimensions } from "react-native";
 import { useAuthStore } from "../store/AuthStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../utils/useTheme";
 
 type DetailRouteProp = RouteProp<RootStackParamList, "Detail">;
@@ -17,73 +17,88 @@ const DetailScreen = () => {
   const route = useRoute<DetailRouteProp>();
   const { id } = route.params;
   const colors = useTheme();
-
-  {/*SEARCH INSTRUMENT BY ID*/ }
+  const fetchHistory = useWatchlistStore((state) => state.fetchHistory);
   const instruments = useWatchlistStore((state) => state.instruments);
-  const instrument = instruments.find((item) => item.id === id);
+  
+  const { width: screenWidth } = useWindowDimensions();
+  const { favorites, addFavorite, removeFavorite } = useAuthStore();
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useAuthStore();
+  
+  const [range, setRange] = useState<'5m' | '1h' | '12h' | '1d'>('1d');
+  const [loadingHistory, setLoadingHistory] = useState(true);
 
+  const instrument = instruments.find((item) => item.id === id);
+  const isFavorite = favorites.includes(id);
+  const isInWatchlist = watchlist.includes(id);
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (id) {
+        setLoadingHistory(true);
+        await fetchHistory(id);
+        setLoadingHistory(false);
+      }
+    };
+    loadData();
+  }, [id, fetchHistory]);
 
   if (!instrument) {
     return (
-      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
-        <Text style={{ fontSize: 16, color: "#666" }}>
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center", backgroundColor: colors.background }]}>
+        <Text style={{ fontSize: 16, color: colors.textSecondary }}>
           Instrument not found
         </Text>
       </View>
-    )
+    );
   }
 
-  {/*GRAPH*/ }
+  if (loadingHistory && instrument.history.length === 0) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center", backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.text} />
+        <Text style={{ color: colors.textSecondary, marginTop: 12 }}>Charge history...</Text>
+      </View>
+    );
+  }
 
-  const { width: screenWidth } = useWindowDimensions();
+  const hasHistory = !loadingHistory && instrument.history.length > 0;
+
+  // GRAPH CALCULATIONS
   const containerPadding = 40;
   const graphPadding = 32;
   const chartWidth = screenWidth - containerPadding - graphPadding;
   const yAxisLabelWidth = 35;
 
-
-
   const chartColor = ChangeColor(instrument.change);
 
-  const { favorites, addFavorite, removeFavorite } = useAuthStore();
-  const isFavorite = favorites.includes(id);
-
-  const [range, setRange] = useState<'5m' | '1h' | '12h' | '1d'>('1d');
-
   const getChartData = () => {
-
     switch (range) {
-
       case '5m':
-        return instrument.history.slice(-10);
+        return instrument.history.slice(-6); 
       case '1h':
-        return instrument.history.slice(-40);
+        return instrument.history.slice(-24); 
       case '12h':
-        return instrument.history.slice(-60);
+        return instrument.history.slice(-144); 
       case '1d':
-        return instrument.history.slice(-80);
+        return instrument.history; 
+      default:
+        return instrument.history;
     }
-  }
+  };
 
-  const chartData = getChartData().map((value) => ({ value }));
+  const chartData = (getChartData() ?? []).map((value) => ({ value }));
 
-  {/*TOOGLE FAVORITE*/ }
-
+  // TOGGLE FAVORITE
   const toggleFavorite = () => {
     if (isFavorite) {
       removeFavorite(id);
-
     } else {
       addFavorite(id);
     }
   };
 
-  {/*BUTTON ADD OR REMOVE WATCHLIST*/ }
-  const { watchlist, addToWatchlist, removeFromWatchlist } = useAuthStore();
-  const isInWatchlist = watchlist.includes(id);
-
+  // TOGGLE WATCHLIST
   const toggleWatchlist = () => {
-
     if (isInWatchlist) {
       removeFromWatchlist(id);
     } else {
@@ -144,8 +159,7 @@ const DetailScreen = () => {
       </View>
 
       <View style={[styles.graphContainer, { backgroundColor: colors.card }]}>
-        {chartData.length > 1 ? (
-
+        {hasHistory ? (
           <LineChart
             data={chartData}
             areaChart
@@ -175,7 +189,12 @@ const DetailScreen = () => {
             animationDuration={1200}
           />
         ) : (
-          <Text style={{ textAlign: "center", color: colors.textSecondary, padding: 20 }}></Text>
+          <View style={{ height: 180, justifyContent: "center", alignItems: "center" }}>
+            <Icon name="stats-chart-outline" size={40} color={colors.textSecondary} />
+            <Text style={{ textAlign: "center", color: colors.textSecondary, marginTop: 10 }}>
+              {loadingHistory ? "Searching historical..." : "No graph data available"}
+            </Text>
+          </View>
         )}
       </View>
 

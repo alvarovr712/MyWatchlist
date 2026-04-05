@@ -14,12 +14,14 @@ function App() {
   const setInstruments = useWatchlistStore((state) => state.setInstruments);
 
   useEffect(() => {
-    
-    setInstruments(mockInstruments);
+
+    const { fetchInstruments } = useWatchlistStore.getState();
+
+    fetchInstruments();
 
     const interval = setInterval(() => {
-      useWatchlistStore.getState().updatePrices();
-    }, 5000);
+      fetchInstruments();
+    }, 5000)
 
     return () => clearInterval(interval);
   }, []);
@@ -28,7 +30,7 @@ function App() {
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <RootNavigator />
-      <Toast/>
+      <Toast />
     </SafeAreaProvider>
   );
 }
