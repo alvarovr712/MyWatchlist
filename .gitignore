@@ -1,0 +1,29 @@
+# React Native
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Metro
+.expo/
+.expo-shared/
+
+# Android
+android/.gradle/
+android/app/build/
+android/.cxx/
+android/build/
+*.iml
+
+# iOS
+ios/Pods/
+ios/build/
+
+# Logs
+*.log
+
+# Bundles
+*.jsbundle
+
+# Misc
+.DS_Store
+.env
