@@ -26,7 +26,7 @@ const SearchScreen = () => {
     i.symbol.toLowerCase().includes(query.toLowerCase())
   );
 
-  if (loading) {
+  if (loading && instruments.length === 0) {
     return (
       <View style={[styles.center, { backgroundColor: colors.background }]}>
         <ActivityIndicator size="large" color={colors.text} />
@@ -35,7 +35,7 @@ const SearchScreen = () => {
     );
   }
 
-  if (error) {
+  if (error && instruments.length === 0) {
     return (
       <View style={[styles.center, { backgroundColor: colors.background }]}>
         <Text style={{ color: colors.text, marginBottom: 12 }} onPress={fetchInsruments}>{error}</Text>
